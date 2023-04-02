@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bi83njut1e760"]
+
+[ext_resource type="Script" path="res://Braco.gd" id="1_jva7c"]
+[ext_resource type="Texture2D" uid="uid://ccve84u2of04j" path="res://millennium_falcon_interior_background_drawing_by_bantambb_dbowvuj-fullview.jpg" id="2_cjh3c"]
+[ext_resource type="Texture2D" uid="uid://cjsvc2ypu1gcq" path="res://pngwing.com.png" id="3_cnryd"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_jva7c")
+
+[node name="MillenniumFalconInteriorBackgroundDrawingByBantambbDbowvuj-fullview" type="Sprite2D" parent="."]
+position = Vector2(579.5, 326)
+scale = Vector2(1.28333, 1.08333)
+texture = ExtResource("2_cjh3c")
+
+[node name="Pngwingcom" type="Sprite2D" parent="."]
+position = Vector2(578, 454)
+scale = Vector2(0.4375, 0.384766)
+texture = ExtResource("3_cnryd")
+
+[node name="Timer" type="Timer" parent="."]
