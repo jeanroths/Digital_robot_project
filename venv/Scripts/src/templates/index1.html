@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robot Position</title>
+  </head>
+  <body>
+    <h1>Posição do robô</h1>
+    <h2>Posições atuais</h2>
+    Posição X: <p id="current_positionX"></p>
+    Posição Y: <p id="current_positionY"></p>
+    Posição Z: <p id="current_positionZ"></p>
+    Rotação: <p id="current_rotation"></p>
+    <button onclick="getCurrentPosition()">Devolver posições atuais</button>
+    <h2>Atualizar posições</h2>
+    <form onsubmit="updatePosition(event)">
+      <label>
+        PosiçãoX:
+        <input type="number" name="positionX" id="position_inputX" required> <br>
+        PosiçãoY:
+        <input type="number" name="positionY" id="position_inputY" required> <br>
+        PosiçãoZ:
+        <input type="number" name="positionZ" id="position_inputZ" required> <br>
+        Rotação:
+        <input type="number" name="rotation" id="rotation_input" required> <br>
+      </label>
+      <br><br>
+      <input type="submit" value="Atualizar Posições">
+    </form>
+    <h2>Histórico de posições</h2>
+    <ul id="history_list"></ul>
+    <button onclick="getHistory()">Histórico de posições</button>
+  </body>
+  <script>
+    function getCurrentPosition() {
+      fetch('/robot/position')
+        .then(response => response.json())
+        .then(data => {
+          const currentPositionX = data.positionX;
+          const currentPositionY = data.positionY;
+          const currentPositionZ = data.positionZ;
+          const currentRotation = data.rotation;
+
+          document.getElementById('current_positionX').innerHTML = currentPositionX;
+          document.getElementById('current_positionY').innerHTML = currentPositionY;
+          document.getElementById('current_positionZ').innerHTML = currentPositionZ;
+          document.getElementById('current_rotation').innerHTML = currentRotation;
+        })
+        .catch(error => console.error(error));
+    }
+
+    function updatePosition(event) {
+      event.preventDefault();
+      const positionX = document.getElementById('position_inputX').value;
+      const positionY = document.getElementById('position_inputY').value;
+      const positionZ = document.getElementById('position_inputZ').value;
+      const rotation = document.getElementById('rotation_input').value;
+      fetch('/robot/position', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ positionX , positionY , positionZ, rotation })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+        })
+        .catch(error => console.error(error));
+    }
+
+    function getHistory() {
+      fetch('/robot/history')
+        .then(response => response.json())
+        .then(data => {
+          const historyList = document.getElementById('history_list');
+          historyList.innerHTML = '';
+          for (const item of data.history) {
+            const listItemX = document.createElement('li');
+            const listItemY = document.createElement('li');
+            const listItemZ = document.createElement('li');
+            const listItemR = document.createElement('li');
+            listItemX.textContent = `- X: ${item.positionX}`;
+            listItemY.textContent = `- Y: ${item.positionY}`;
+            listItemZ.textContent = `- Z: ${item.positionZ}`;
+            listItemR.textContent = `- Rotação: ${item.rotation}`;
+            historyList.appendChild(listItemX);
+            historyList.appendChild(listItemY);
+            historyList.appendChild(listItemZ);
+            historyList.appendChild(listItemR);
+          }
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</html>
