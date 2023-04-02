@@ -73,18 +73,22 @@
           const historyList = document.getElementById('history_list');
           historyList.innerHTML = '';
           for (const item of data.history) {
+            const listItemID = document.createElement('li');
             const listItemX = document.createElement('li');
             const listItemY = document.createElement('li');
             const listItemZ = document.createElement('li');
             const listItemR = document.createElement('li');
+            listItemID.textContent = `- passo: ${item.id}`;
             listItemX.textContent = `- X: ${item.positionX}`;
             listItemY.textContent = `- Y: ${item.positionY}`;
             listItemZ.textContent = `- Z: ${item.positionZ}`;
             listItemR.textContent = `- Rotação: ${item.rotation}`;
+            historyList.appendChild(listItemID);
             historyList.appendChild(listItemX);
             historyList.appendChild(listItemY);
             historyList.appendChild(listItemZ);
             historyList.appendChild(listItemR);
+            historyList.appendChild(document.createElement('br'));
           }
         })
         .catch(error => console.error(error));

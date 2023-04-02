@@ -24,7 +24,11 @@ def get_robot_position():
     if row is None:
         return jsonify({'message': 'Position not found'}), 404
     else:
-        return jsonify({'positionX': row['positionX'], 'positionY': row['positionY'], 'positionZ': row['positionZ'], 'rotation': row['rotation']}), 200
+        return jsonify({'id': row['id'],
+                        'positionX': row['positionX'],
+                        'positionY': row['positionY'],
+                        'positionZ': row['positionZ'],
+                        'rotation': row['rotation']}), 200
 
 # Rota para atualizar a posição do robô
 @app.route('/robot/position', methods=['PUT'])
@@ -47,14 +51,23 @@ def update_robot_position():
 # Rota para retornar o histórico de deslocamentos do robô
 @app.route('/robot/history', methods=['GET'])
 def get_robot_history():
-    conn = connect_db()
+    conn = sqlite3.connect('robot.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM robot')
+    cursor.execute('SELECT * FROM robot ORDER BY id ASC')
     rows = cursor.fetchall()
+    conn.close()
+    print(rows)
+
     if len(rows) == 0:
         return jsonify({'message': 'History not found'}), 404
     else:
-        history = [{'id': row['id'], 'positionX': row['positionX'], 'positionY': row['positionY'], 'positionZ': row['positionZ'], 'rotation':row['rotation']} for row in rows]
+        history = []
+        for row in rows:
+            history.append({'id': row[0],
+                    'positionX': row[1],
+                    'positionY': row[2],
+                    'positionZ': row[3],
+                    'rotation': row[4]}) 
         return jsonify({'history': history}), 200
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3000, debug=True)
