@@ -1,6 +1,12 @@
 # Projeto simulação robô digital
 O projeto Robô Digital tem por objetivo a elaboração de uma solução completa de integração entre as Tecnologias de Automação (TA) e as Tecnologias de Informação (TI). Trata-se de uma representação digital para um braço robótico com conexão em tempo real com sua contrapartida no mundo real.
 
+## Tecnologias Usadas
+- Backend em Flask;
+- Banco de dados com SQLite3;
+- Frontend em HTML;
+- Godot Engine para simulação.
+
 ## Estrutura do projeto
 Abaixo encontra-se a árvore de pastas do repositório:
 
